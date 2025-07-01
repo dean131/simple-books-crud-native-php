@@ -1,12 +1,12 @@
--- Buat database baru, misalnya dengan nama 'db_workshop_pemula'
--- Lalu jalankan atau import script ini.
+-- Create a new database, for example, named 'db_workshop_beginner'
+-- Then run or import this script.
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
-SET time_zone = "+00:00";
+SET time_zone = "+00:00"; -- Set timezone to UTC
 
 --
--- Struktur tabel untuk `admins` (disederhanakan dengan ID auto-increment)
+-- Table structure for `admins` (simplified with auto-increment ID)
 --
 CREATE TABLE `admins` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -20,7 +20,7 @@ CREATE TABLE `admins` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Struktur tabel untuk `books` (disederhanakan dengan ID auto-increment)
+-- Table structure for `books` (simplified with auto-increment ID)
 --
 CREATE TABLE `books` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -30,7 +30,7 @@ CREATE TABLE `books` (
   `isbn` char(36) NOT NULL,
   `year` year(4) NOT NULL,
   `picture` varchar(255) DEFAULT NULL,
-  `category` enum('Fiksi','Non Fiksi','Sains','Teknologi') NOT NULL,
+  `category` enum('Fiction','Non-Fiction','Science','Technology') NOT NULL,
   `description` text DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),

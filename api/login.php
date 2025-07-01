@@ -1,49 +1,48 @@
 <?php
-// api/login.php
 
-// Memanggil file konfigurasi dari folder induk
-require_once '../config.php';
+// Include the configuration file from the parent directory
+require_once '../config_en.php';
 
-// Hanya izinkan metode POST
+// Only allow POST method
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     http_response_code(405); // Method Not Allowed
-    echo json_encode(['message' => 'Metode tidak diizinkan.']);
+    echo json_encode(['message' => 'Method not allowed.']);
     exit();
 }
 
-// Mengambil data JSON dari body request
+// Get JSON data from the request body
 $data = json_decode(file_get_contents("php://input"));
 
-// Validasi data input
+// Validate input data
 if (empty($data->username) || empty($data->password)) {
     http_response_code(400); // Bad Request
-    echo json_encode(['message' => 'Username atau password tidak boleh kosong.']);
+    echo json_encode(['message' => 'Username or password cannot be empty.']);
     exit();
 }
 
-// Amankan input
-$username = mysqli_real_escape_string($conn, $data->username);
+// Sanitize input
+$username = mysqli_real_escape_string($connection, $data->username);
 $password = $data->password;
 
-// Cari admin berdasarkan username
+// Find the admin by username
 $query = "SELECT * FROM admins WHERE username = '$username'";
-$result = mysqli_query($conn, $query);
+$result = mysqli_query($connection, $query);
 $admin = mysqli_fetch_assoc($result);
 
-// Jika admin ditemukan dan password cocok
+// If admin is found AND the password matches
 if ($admin && password_verify($password, $admin['password'])) {
-    // Hapus field password agar tidak ikut terkirim dalam response
+    // Remove the password field so it's not sent in the response
     unset($admin['password']); 
     
     http_response_code(200); // OK
     echo json_encode([
-        'message' => 'Login berhasil.',
+        'message' => 'Login successful.',
         'data' => $admin
     ]);
 } else {
     http_response_code(401); // Unauthorized
-    echo json_encode(['message' => 'Username atau password salah.']);
+    echo json_encode(['message' => 'Incorrect username or password.']);
 }
 
-// Tutup koneksi
-mysqli_close($conn);
+// Close the connection
+mysqli_close($connection);
