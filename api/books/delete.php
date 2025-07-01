@@ -17,7 +17,7 @@ if ($id == 0) {
 
 $query = "DELETE FROM books WHERE id=$id";
 
-if (mysqli_query($koneksi, $query) && mysqli_affected_rows($koneksi) > 0) {
+if (mysqli_query($conn, $query) && mysqli_affected_rows($conn) > 0) {
     http_response_code(200);
     echo json_encode(['message' => 'Buku berhasil dihapus.']);
 } else {
@@ -25,4 +25,4 @@ if (mysqli_query($koneksi, $query) && mysqli_affected_rows($koneksi) > 0) {
     echo json_encode(['message' => 'Gagal menghapus atau buku tidak ditemukan.']);
 }
 
-mysqli_close($koneksi);
+mysqli_close($conn);

@@ -8,10 +8,10 @@ $db_pass = '';
 $db_name = 'db_mini_workshop'; // Sesuaikan dengan nama database Anda
 
 // --- Membuat Koneksi ---
-$koneksi = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+$conn = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 
 // --- Cek Koneksi ---
-if (!$koneksi) {
+if (!$conn) {
     // Jika koneksi gagal, hentikan skrip dan tampilkan pesan error
     die("Koneksi ke database gagal: " . mysqli_connect_error());
 }

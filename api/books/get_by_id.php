@@ -17,7 +17,7 @@ if ($id == 0) {
 }
 
 $query = "SELECT * FROM books WHERE id = $id";
-$result = mysqli_query($koneksi, $query);
+$result = mysqli_query($conn, $query);
 $book = mysqli_fetch_assoc($result);
 
 if ($book) {
@@ -28,4 +28,4 @@ if ($book) {
     echo json_encode(['message' => 'Buku tidak ditemukan.']);
 }
 
-mysqli_close($koneksi);
+mysqli_close($conn);

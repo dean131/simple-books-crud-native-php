@@ -29,7 +29,7 @@ Endpoint yang berhubungan dengan proses registrasi dan login admin.
 
 ```json
 {
-    "pesan": "Registrasi admin berhasil."
+    "message": "Registrasi admin berhasil."
 }
 ```
 
@@ -37,7 +37,7 @@ Endpoint yang berhubungan dengan proses registrasi dan login admin.
 
 ```json
 {
-    "pesan": "Data tidak lengkap."
+    "message": "Data tidak lengkap."
 }
 ```
 
@@ -46,7 +46,7 @@ Endpoint yang berhubungan dengan proses registrasi dan login admin.
 
 ```json
 {
-    "pesan": "Registrasi admin gagal. Mungkin username sudah ada."
+    "message": "Registrasi admin gagal. Mungkin username sudah ada."
 }
 ```
 
@@ -70,7 +70,7 @@ Endpoint yang berhubungan dengan proses registrasi dan login admin.
 
 ```json
 {
-    "pesan": "Login berhasil.",
+    "message": "Login berhasil.",
     "data": {
         "id": 1,
         "name": "Nama Lengkap Admin",
@@ -85,7 +85,7 @@ Endpoint yang berhubungan dengan proses registrasi dan login admin.
 
 ```json
 {
-    "pesan": "Username atau password salah."
+    "message": "Username atau password salah."
 }
 ```
 
@@ -168,7 +168,7 @@ Endpoint untuk semua operasi yang berkaitan dengan data buku.
 
 ```json
 {
-    "pesan": "Buku tidak ditemukan."
+    "message": "Buku tidak ditemukan."
 }
 ```
 
@@ -210,7 +210,7 @@ Endpoint untuk semua operasi yang berkaitan dengan data buku.
 
 ```json
 {
-    "pesan": "Buku berhasil ditambahkan."
+    "message": "Buku berhasil ditambahkan."
 }
 ```
 
@@ -243,7 +243,7 @@ Endpoint untuk semua operasi yang berkaitan dengan data buku.
 
 ```json
 {
-    "pesan": "Data buku berhasil diperbarui."
+    "message": "Data buku berhasil diperbarui."
 }
 ```
 
@@ -260,7 +260,7 @@ Endpoint untuk semua operasi yang berkaitan dengan data buku.
 
 ```json
 {
-    "pesan": "Buku berhasil dihapus."
+    "message": "Buku berhasil dihapus."
 }
 ```
 
@@ -268,5 +268,5 @@ Endpoint untuk semua operasi yang berkaitan dengan data buku.
 
 ```json
 {
-    "pesan": "Gagal menghapus atau buku tidak ditemukan."
+    "message": "Gagal menghapus atau buku tidak ditemukan."
 }

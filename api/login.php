@@ -22,12 +22,12 @@ if (empty($data->username) || empty($data->password)) {
 }
 
 // Amankan input
-$username = mysqli_real_escape_string($koneksi, $data->username);
+$username = mysqli_real_escape_string($conn, $data->username);
 $password = $data->password;
 
 // Cari admin berdasarkan username
 $query = "SELECT * FROM admins WHERE username = '$username'";
-$result = mysqli_query($koneksi, $query);
+$result = mysqli_query($conn, $query);
 $admin = mysqli_fetch_assoc($result);
 
 // Jika admin ditemukan dan password cocok
@@ -46,4 +46,4 @@ if ($admin && password_verify($password, $admin['password'])) {
 }
 
 // Tutup koneksi
-mysqli_close($koneksi);
+mysqli_close($conn);

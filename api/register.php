@@ -22,15 +22,15 @@ if (empty($data->name) || empty($data->username) || empty($data->password)) {
 }
 
 // Amankan input dari user
-$name = mysqli_real_escape_string($koneksi, $data->name);
-$username = mysqli_real_escape_string($koneksi, $data->username);
+$name = mysqli_real_escape_string($conn, $data->name);
+$username = mysqli_real_escape_string($conn, $data->username);
 $password = password_hash($data->password, PASSWORD_BCRYPT); // Hash password
 
 // Buat query untuk memasukkan data baru
 $query = "INSERT INTO admins (name, username, password) VALUES ('$name', '$username', '$password')";
 
 // Eksekusi query
-if (mysqli_query($koneksi, $query)) {
+if (mysqli_query($conn, $query)) {
     http_response_code(201); // Created
     echo json_encode(['message' => 'Registrasi admin berhasil.']);
 } else {
@@ -39,4 +39,4 @@ if (mysqli_query($koneksi, $query)) {
 }
 
 // Tutup koneksi
-mysqli_close($koneksi);
+mysqli_close($conn);

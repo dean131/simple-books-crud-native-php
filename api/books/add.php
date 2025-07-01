@@ -15,19 +15,19 @@ if (empty($data->title) || empty($data->author)) {
     exit();
 }
 
-$title = mysqli_real_escape_string($koneksi, $data->title);
-$author = mysqli_real_escape_string($koneksi, $data->author);
-$publisher = mysqli_real_escape_string($koneksi, $data->publisher ?? '');
-$isbn = mysqli_real_escape_string($koneksi, $data->isbn ?? '');
+$title = mysqli_real_escape_string($conn, $data->title);
+$author = mysqli_real_escape_string($conn, $data->author);
+$publisher = mysqli_real_escape_string($conn, $data->publisher ?? '');
+$isbn = mysqli_real_escape_string($conn, $data->isbn ?? '');
 $year = (int) ($data->year ?? 0);
-$picture = mysqli_real_escape_string($koneksi, $data->picture ?? '');
-$category = mysqli_real_escape_string($koneksi, $data->category);
-$description = mysqli_real_escape_string($koneksi, $data->description ?? '');
+$picture = mysqli_real_escape_string($conn, $data->picture ?? '');
+$category = mysqli_real_escape_string($conn, $data->category);
+$description = mysqli_real_escape_string($conn, $data->description ?? '');
 
 $query = "INSERT INTO books (title, author, publisher, isbn, year, picture, category, description) 
           VALUES ('$title', '$author', '$publisher', '$isbn', $year, '$picture', '$category', '$description')";
 
-if (mysqli_query($koneksi, $query)) {
+if (mysqli_query($conn, $query)) {
     http_response_code(201);
     echo json_encode(['message' => 'Buku berhasil ditambahkan.']);
 } else {
@@ -35,4 +35,4 @@ if (mysqli_query($koneksi, $query)) {
     echo json_encode(['message' => 'Gagal menambahkan buku.']);
 }
 
-mysqli_close($koneksi);
+mysqli_close($conn);
