@@ -1,6 +1,6 @@
 <?php
 
-require_once '../config_en.php';
+require_once '../config.php';
 
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     http_response_code(405);
@@ -34,7 +34,7 @@ if ($admin && password_verify($password, $admin['password'])) {
 
     // Remove sensitive data from the response
     unset($admin['password']);
-    unset($admin['api_token']); // Don't send the old token
+    unset($admin['api_token']);
     
     http_response_code(200);
     echo json_encode([

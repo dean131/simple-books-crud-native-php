@@ -1,91 +1,101 @@
-# Dokumentasi API - Aplikasi Manajemen Buku
+# Dokumentasi API Lengkap - Aplikasi Manajemen Buku
 
-Dokumen ini menjelaskan setiap endpoint yang tersedia di backend aplikasi manajemen buku.
+Dokumen ini menjelaskan secara rinci setiap endpoint yang tersedia di backend aplikasi manajemen buku.
 
 **Base URL:** `http://localhost/workshop-backend`
 
 ---
 
-## 1. Otentikasi Admin
+## Konsep Otentikasi
+
+API ini menggunakan sistem otentikasi berbasis token untuk melindungi beberapa endpoint (Tambah, Ubah, Hapus Buku).
+
+**Alur Kerja Token:**
+
+1.  Admin melakukan **Login** menggunakan username dan password.
+2.  Jika berhasil, API akan memberikan sebuah **API Token** acak.
+3.  Untuk mengakses endpoint yang dilindungi, **sertakan token tersebut** di dalam *header* permintaan dengan nama `Authorization`.
+
+**Contoh Header Permintaan (di Postman):**
+
+-   **Key:** `Authorization`
+-   **Value:** `a1b2c3d4e5f6a1b2c3d4e5f6...` (token yang didapat saat login)
+
+---
+
+## 1. Otentikasi & Manajemen Admin
 
 Endpoint yang berhubungan dengan proses registrasi dan login admin.
 
 ### **1.1 Registrasi Admin Baru**
 
-- **Fitur:** Mendaftarkan seorang admin baru ke dalam sistem.
-- **Method:** `POST`
-- **Endpoint:** `/api/register.php`
-- **Body Request:** `application/json`
+-   **Fitur:** Mendaftarkan seorang admin baru ke dalam sistem. Endpoint ini bersifat publik.
+-   **Method:** `POST`
+-   **Endpoint:** `/api/register.php`
+-   **Body Request:** `application/json`
 
 ```json
 {
-    "name": "Nama Lengkap Admin",
-    "username": "usernamebaru",
-    "password": "passwordrahasia"
+    "name": "Admin Full Name",
+    "username": "newadmin",
+    "password": "verysecretpassword"
 }
 ```
 
-- **Contoh Sukses (Code 201 Created)**
+-   **Contoh Sukses (Code 201 Created)**
 
 ```json
 {
-    "message": "Registrasi admin berhasil."
+    "message": "Admin registration successful."
 }
 ```
 
-- **Contoh Gagal (Code 400 Bad Request)**
+-   **Contoh Gagal (Code 400 Bad Request)**
 
 ```json
 {
-    "message": "Data tidak lengkap."
-}
-```
-
-- **Contoh Gagal (Code 500 Internal Server Error)**
-  *(Terjadi jika username sudah terdaftar)*
-
-```json
-{
-    "message": "Registrasi admin gagal. Mungkin username sudah ada."
+    "message": "Incomplete data."
 }
 ```
 
 ---
 
-### **1.2 Login Admin**
+### **1.2 Login Admin & Mendapatkan Token**
 
-- **Fitur:** Memverifikasi kredensial admin untuk login.
-- **Method:** `POST`
-- **Endpoint:** `/api/login.php`
-- **Body Request:** `application/json`
+-   **Fitur:** Memverifikasi kredensial admin dan menghasilkan API Token untuk sesi tersebut.
+-   **Method:** `POST`
+-   **Endpoint:** `/api/login.php`
+-   **Body Request:** `application/json`
 
 ```json
 {
-    "username": "usernamebaru",
-    "password": "passwordrahasia"
+    "username": "newadmin",
+    "password": "verysecretpassword"
 }
 ```
 
-- **Contoh Sukses (Code 200 OK)**
+-   **Contoh Sukses (Code 200 OK)**
+    *(Simpan nilai `token` ini untuk digunakan pada endpoint yang dilindungi)*
 
 ```json
 {
-    "message": "Login berhasil.",
+    "message": "Login successful.",
     "data": {
         "id": 1,
-        "name": "Nama Lengkap Admin",
-        "username": "usernamebaru",
-        "created_at": "2025-07-01 14:30:00",
-        "updated_at": "2025-07-01 14:30:00"
-    }
+        "name": "Admin Full Name",
+        "username": "newadmin",
+        "created_at": "2025-07-02 09:50:00",
+        "updated_at": "2025-07-02 09:50:00"
+    },
+    "token": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6"
 }
 ```
 
-- **Contoh Gagal (Code 401 Unauthorized)**
+-   **Contoh Gagal (Code 401 Unauthorized)**
 
 ```json
 {
-    "message": "Username atau password salah."
+    "message": "Incorrect username or password."
 }
 ```
 
@@ -93,43 +103,31 @@ Endpoint yang berhubungan dengan proses registrasi dan login admin.
 
 ## 2. Manajemen Buku (CRUD)
 
-Endpoint untuk semua operasi yang berkaitan dengan data buku.
+Semua endpoint di bawah ini menggunakan file tunggal `/api/book.php`. Aksi ditentukan oleh Metode HTTP yang digunakan.
 
-### **2.1 Melihat Semua Buku**
+### **2.1 Melihat Semua Buku (Publik)**
 
-- **Fitur:** Mendapatkan daftar semua buku yang ada di database.
-- **Method:** `GET`
-- **Endpoint:** `/api/books/get_all.php`
-- **Contoh Sukses (Code 200 OK)**
+-   **Fitur:** Mendapatkan daftar semua buku. Tidak memerlukan otentikasi.
+-   **Method:** `GET`
+-   **Endpoint:** `/api/book.php`
+
+-   **Contoh Sukses (Code 200 OK)**
 
 ```json
 {
     "data": [
         {
             "id": 1,
-            "title": "Belajar PHP Native",
+            "title": "Learning Native PHP",
             "author": "Andika Pratama",
             "publisher": "Informatika",
             "isbn": "1234567890",
             "year": 2023,
             "picture": null,
-            "category": "Teknologi",
-            "description": "Buku panduan untuk pemula.",
-            "created_at": "2025-07-01 14:35:00",
-            "updated_at": "2025-07-01 14:35:00"
-        },
-        {
-            "id": 2,
-            "title": "Fiksi Ilmiah Terbaik",
-            "author": "Dewi Ayu",
-            "publisher": "Gramedia",
-            "isbn": "0987654321",
-            "year": 2024,
-            "picture": null,
-            "category": "Fiksi",
-            "description": "Kumpulan cerita fiksi.",
-            "created_at": "2025-07-01 14:40:00",
-            "updated_at": "2025-07-01 14:40:00"
+            "category": "Technology",
+            "description": "A guide for beginners.",
+            "created_at": "2025-07-02 09:55:00",
+            "updated_at": "2025-07-02 09:55:00"
         }
     ]
 }
@@ -137,136 +135,94 @@ Endpoint untuk semua operasi yang berkaitan dengan data buku.
 
 ---
 
-### **2.2 Melihat Detail Buku Berdasarkan ID**
+### **2.2 Melihat Detail Buku (Publik)**
 
-- **Fitur:** Mendapatkan detail satu buku spesifik.
-- **Method:** `GET`
-- **Endpoint:** `/api/books/get_by_id.php`
-- **URL Params:** `id` (wajib)
-  - Contoh: `/api/books/get_by_id.php?id=1`
-- **Contoh Sukses (Code 200 OK)**
+-   **Fitur:** Mendapatkan detail satu buku spesifik. Tidak memerlukan otentikasi.
+-   **Method:** `GET`
+-   **Endpoint:** `/api/book.php?id=1`
 
-```json
-{
-    "data": {
-        "id": 1,
-        "title": "Belajar PHP Native",
-        "author": "Andika Pratama",
-        "publisher": "Informatika",
-        "isbn": "1234567890",
-        "year": 2023,
-        "picture": null,
-        "category": "Teknologi",
-        "description": "Buku panduan untuk pemula.",
-        "created_at": "2025-07-01 14:35:00",
-        "updated_at": "2025-07-01 14:35:00"
-    }
-}
-```
-
-- **Contoh Gagal (Code 404 Not Found)**
+-   **Contoh Gagal (Buku Tidak Ditemukan - Code 404 Not Found)**
 
 ```json
 {
-    "message": "Buku tidak ditemukan."
+    "message": "Book not found."
 }
 ```
 
 ---
 
-### **2.3 Mencari Buku**
+### **2.3 Menambah Buku Baru (Dilindungi)**
 
-- **Fitur:** Mencari buku berdasarkan kata kunci pada judul atau penulis.
-- **Method:** `GET`
-- **Endpoint:** `/api/books/search.php`
-- **URL Params:** `q` (wajib)
-  - Contoh: `/api/books/search.php?q=php`
-- **Contoh Sukses (Code 200 OK)**
-  *(Sama seperti response "Melihat Semua Buku", tetapi hanya berisi hasil pencarian)*
-
----
-
-### **2.4 Menambah Buku Baru**
-
-- **Fitur:** Menambahkan satu data buku baru ke database.
-- **Method:** `POST`
-- **Endpoint:** `/api/books/add.php`
-- **Body Request:** `application/json`
+-   **Fitur:** Menambahkan satu data buku baru. Memerlukan otentikasi token.
+-   **Method:** `POST`
+-   **Endpoint:** `/api/book.php`
+-   **Headers:** `Authorization: <token>` (Wajib)
+-   **Body Request:** `application/json`
 
 ```json
 {
-    "title": "Dasar-Dasar Express.js",
+    "title": "Express.js Fundamentals",
     "author": "Budi Santoso",
-    "publisher": "Elex Media",
-    "isbn": "1122334455",
-    "year": 2025,
-    "picture": "[https://example.com/cover.jpg](https://example.com/cover.jpg)",
-    "category": "Teknologi",
-    "description": "Pengenalan framework Express.js untuk backend."
+    "category": "Technology",
+    "description": "An introduction to the Express.js framework."
 }
 ```
 
-- **Contoh Sukses (Code 201 Created)**
+-   **Contoh Sukses (Code 201 Created)**
 
 ```json
 {
-    "message": "Buku berhasil ditambahkan."
+    "message": "Book added successfully."
+}
+```
+
+-   **Contoh Gagal (Token Tidak Valid - Code 401 Unauthorized)**
+
+```json
+{
+    "message": "Invalid authorization token."
 }
 ```
 
 ---
 
-### **2.5 Memperbarui Data Buku**
+### **2.4 Memperbarui Data Buku (Dilindungi)**
 
-- **Fitur:** Mengubah data buku yang sudah ada berdasarkan ID.
-- **Method:** `POST`
-- **Endpoint:** `/api/books/update.php`
-- **URL Params:** `id` (wajib)
-  - Contoh: `/api/books/update.php?id=3`
-- **Body Request:** `application/json`
-  *(Kirim semua field, termasuk yang tidak diubah)*
+-   **Fitur:** Mengubah data buku yang sudah ada. Memerlukan otentikasi token.
+-   **Method:** `PUT`
+-   **Endpoint:** `/api/book.php?id=1`
+-   **Headers:** `Authorization: <token>` (Wajib)
+-   **Body Request:** `application/json` (Kirim semua field)
 
 ```json
 {
-    "title": "Dasar-Dasar Express.js Edisi Revisi",
+    "title": "Express.js Fundamentals Revised Edition",
     "author": "Budi Santoso",
-    "publisher": "Elex Media Komputindo",
-    "isbn": "1122334455",
-    "year": 2025,
-    "picture": "[https://example.com/cover.jpg](https://example.com/cover.jpg)",
-    "category": "Teknologi",
-    "description": "Pengenalan framework Express.js untuk backend - Edisi terbaru."
+    "category": "Technology",
+    "description": "The latest edition."
 }
 ```
 
-- **Contoh Sukses (Code 200 OK)**
+-   **Contoh Sukses (Code 200 OK)**
 
 ```json
 {
-    "message": "Data buku berhasil diperbarui."
+    "message": "Book data updated successfully."
 }
 ```
 
 ---
 
-### **2.6 Menghapus Buku**
+### **2.5 Menghapus Buku (Dilindungi)**
 
-- **Fitur:** Menghapus data buku dari database berdasarkan ID.
-- **Method:** `GET`
-- **Endpoint:** `/api/books/delete.php`
-- **URL Params:** `id` (wajib)
-  - Contoh: `/api/books/delete.php?id=3`
-- **Contoh Sukses (Code 200 OK)**
+-   **Fitur:** Menghapus data buku dari database. Memerlukan otentikasi token.
+-   **Method:** `DELETE`
+-   **Endpoint:** `/api/book.php?id=1`
+-   **Headers:** `Authorization: <token>` (Wajib)
 
-```json
-{
-    "message": "Buku berhasil dihapus."
-}
-```
-
-- **Contoh Gagal (Code 404 Not Found)**
+-   **Contoh Sukses (Code 200 OK)**
 
 ```json
 {
-    "message": "Gagal menghapus atau buku tidak ditemukan."
+    "message": "Book deleted successfully."
 }

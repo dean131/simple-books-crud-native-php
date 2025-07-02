@@ -1,7 +1,7 @@
 <?php
 
 // Include the configuration file from the parent directory
-require_once '../config_en.php';
+require_once '../config.php';
 
 // Only allow POST method
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
